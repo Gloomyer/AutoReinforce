@@ -11,7 +11,7 @@ import com.gloomyer.auto.reinforce.Legu;
 import com.gloomyer.auto.upload.IUpload;
 import com.gloomyer.auto.upload.QiniuUpload;
 import com.gloomyer.auto.utils.ApkUtils;
-import com.gloomyer.auto.utils.ExecLinux;
+import com.gloomyer.auto.utils.ShellExecute;
 import com.gloomyer.auto.utils.HttpUtils;
 import com.gloomyer.auto.utils.Log;
 import com.qiniu.util.Json;
@@ -43,7 +43,7 @@ public class ReinForceRunner implements Runnable {
             //循环上传apk
             do {
                 if (uploadinng(apkFile) != null)
-                    apkInfo.setAppUrl(Config.get().getQNStartUrl() + apkFile.getName());
+                    apkInfo.setAppUrl(Config.getDefault().getUpload().getQNStartUrl() + apkFile.getName());
             } while (apkInfo.getAppUrl() == null);
             //加入url map
             ApkUrlConfig.get().put(mapKey, false, apkInfo.getAppUrl());
@@ -65,7 +65,7 @@ public class ReinForceRunner implements Runnable {
 
             if (file != null) {
                 if (uploadinng(file) != null) {
-                    ApkUrlConfig.get().put(mapKey, true, Config.get().getQNStartUrl() + file.getName());
+                    ApkUrlConfig.get().put(mapKey, true, Config.getDefault().getUpload().getQNStartUrl() + file.getName());
                 }
 
             }
@@ -82,7 +82,7 @@ public class ReinForceRunner implements Runnable {
         if (Scheduler.get().count() == 0) {
             //结束了
             BufferedOutputStream bos = null;
-            File file = new File(Config.get().getSaveDir());
+            File file = new File(Config.getDefault().getDir().getOutputDir());
             file = new File(file, "result.txt");
 
             try {
@@ -113,23 +113,23 @@ public class ReinForceRunner implements Runnable {
         String retFile = file.getAbsolutePath().replace(".apk", ".sign.apk");
         String cmd = MessageFormat.format(
                 "{0} sign -ks {1} --ks-key-alias {2} --ks-pass pass:{3} --key-pass pass:{4} --out {5} {6}",
-                Config.get().getApksignerPath(),
-                Config.get().getStoreFile(),
-                Config.get().getKeyAlias(),
-                Config.get().getKeyPassword(),
-                Config.get().getStorePassword(),
+                Config.getDefault().getSigner().getApksignerPath(),
+                Config.getDefault().getSigner().getStoreFile(),
+                Config.getDefault().getSigner().getKeyAlias(),
+                Config.getDefault().getSigner().getKeyPassword(),
+                Config.getDefault().getSigner().getStorePassword(),
                 retFile,
                 file.getAbsolutePath()
         );
         Log.e("sign cmd:{0}", cmd);
-        ExecLinux.exec(cmd);
+        ShellExecute.exec(cmd);
         file.delete();
         return new File(retFile);
     }
 
     //下载加固好的apk
     private File saveApk(ApkInfo apkInfo, String apkUrl) {
-        File saveFile = new File(Config.get().getSaveDir());
+        File saveFile = new File(Config.getDefault().getDir().getOutputDir());
         if (!saveFile.exists() || !saveFile.isDirectory()) {
             saveFile.mkdirs();
         }
@@ -149,7 +149,7 @@ public class ReinForceRunner implements Runnable {
     private String query(String info) {
         StringMap map = Json.decode(info);
         IQuery query;
-        if ("legu".equals(Config.get().getReinforceMethod())) {
+        if ("legu".equals(Config.getDefault().getReinforce().getReinforceMethod())) {
             query = new LGQuery();
         } else {
             throw new RuntimeException("加固方式未配置！");
@@ -160,7 +160,7 @@ public class ReinForceRunner implements Runnable {
 
     private String reinforce(ApkInfo apkInfo) {
         IReinforce reinforce;
-        if ("legu".equals(Config.get().getReinforceMethod())) {
+        if ("legu".equals(Config.getDefault().getReinforce().getReinforceMethod())) {
             reinforce = Legu.get();
         } else {
             throw new RuntimeException("加固方式未配置！");
@@ -185,7 +185,7 @@ public class ReinForceRunner implements Runnable {
      */
     private String uploadinng(File apkFile) {
         IUpload upload;
-        if ("qiniu".equals(Config.get().getUploadMethod())) {
+        if ("qiniu".equals(Config.getDefault().getUpload().getUploadMethod())) {
             upload = QiniuUpload.get();
         } else {
             throw new RuntimeException("上传方式未配置！");

@@ -24,7 +24,7 @@ public class QiniuUpload implements IUpload {
 
     @Override
     public String upload(File file) {
-        if (Config.get().QNIsEmpty()) {
+        if (Config.getDefault().QNIsEmpty()) {
             throw new RuntimeException("七牛参数未配置!");
         }
 
@@ -33,9 +33,12 @@ public class QiniuUpload implements IUpload {
             uploadManager = new UploadManager(cfg);
         }
 
+        String accessKey = Config.getDefault().getUpload().getQNAccessKey();
+        String secretKey = Config.getDefault().getUpload().getQNSecretKey();
+        String bucket = Config.getDefault().getUpload().getQNBucket();
+        Auth auth = Auth.create(accessKey, secretKey);
 
-        Auth auth = Auth.create(Config.get().getQNAccessKey(), Config.get().getQNSecretKey());
-        String upToken = auth.uploadToken(Config.get().getQNBucket());
+        String upToken = auth.uploadToken(bucket);
         Log.i("七牛上传token:{0}", upToken);
 
         try {

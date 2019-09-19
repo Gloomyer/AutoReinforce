@@ -5,8 +5,6 @@ import com.gloomyer.auto.runner.Scheduler;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 
 public class Utils {
     public static String getFileMD5(File file) {
@@ -77,14 +75,15 @@ public class Utils {
      */
     public static void createApkFile(File appDir) {
         long startTime = System.currentTimeMillis();
-        ExecLinux.exec("git pull");
-        ExecLinux.exec("./gradlew clean");
+
+        String gradlew = ShellExecute.isUnix() ? "./gradlew " : "gradlew.bat ";
+
+        ShellExecute.exec(gradlew + "clean");
         Log.e("项目清理完成.");
         //切换
-        //ExecLinux.exec("./gradlew assembleRuctripRelease"); //生成一个包
-        String cmd = "./gradlew :" + appDir.getName() + ":assembleRelease";
+        String cmd = gradlew + appDir.getName() + ":assembleRelease";
         Log.e("生成包命令:" + cmd);
-        ExecLinux.exec(cmd);
+        ShellExecute.exec(cmd);
         Log.e("生产环境包生产 耗时:{0}毫秒", System.currentTimeMillis() - startTime);
     }
 

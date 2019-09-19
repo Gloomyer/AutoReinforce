@@ -5,7 +5,6 @@ import com.gloomyer.auto.domain.ApkInfo;
 import com.gloomyer.auto.utils.Log;
 import com.google.gson.JsonObject;
 import com.tencentcloudapi.common.Credential;
-import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.ms.v20180408.MsClient;
@@ -25,8 +24,9 @@ public class Legu implements IReinforce {
     @Override
     public String reinforce(ApkInfo apkInfo) {
         try {
-
-            Credential cred = new Credential(Config.get().getLGSecretId(), Config.get().getLGSecretKey());
+            String secretId = Config.getDefault().getReinforce().getLGSecretId();
+            String secretKey = Config.getDefault().getReinforce().getLGSecretKey();
+            Credential cred = new Credential(secretId, secretKey);
 
             HttpProfile httpProfile = new HttpProfile();
             httpProfile.setEndpoint("ms.tencentcloudapi.com");

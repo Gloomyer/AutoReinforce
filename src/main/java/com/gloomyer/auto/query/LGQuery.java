@@ -20,8 +20,10 @@ public class LGQuery implements IQuery {
     public String query(StringMap json) {
         try {
             String requestId = json.get("ItemId").toString();
+            String secretId = Config.getDefault().getReinforce().getLGSecretId();
+            String secretKey = Config.getDefault().getReinforce().getLGSecretKey();
             @SuppressWarnings("DuplicatedCode")
-            Credential cred = new Credential(Config.get().getLGSecretId(), Config.get().getLGSecretKey());
+            Credential cred = new Credential(secretId, secretKey);
 
             HttpProfile httpProfile = new HttpProfile();
             httpProfile.setEndpoint("ms.tencentcloudapi.com");
