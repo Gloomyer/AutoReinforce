@@ -13,7 +13,7 @@ public class ApkUrlConfig {
     private HashMap<String, String> urls = new HashMap<>();
 
     public synchronized void put(String key, boolean sign, String url) {
-        urls.put(key + sign, url);
+        urls.put(key + (sign ? "加固包" : "普通包"), url);
     }
 
     public HashMap<String, String> getMap() {

@@ -10,10 +10,7 @@ import com.gloomyer.auto.reinforce.IReinforce;
 import com.gloomyer.auto.reinforce.Legu;
 import com.gloomyer.auto.upload.IUpload;
 import com.gloomyer.auto.upload.QiniuUpload;
-import com.gloomyer.auto.utils.ApkUtils;
-import com.gloomyer.auto.utils.ShellExecute;
-import com.gloomyer.auto.utils.HttpUtils;
-import com.gloomyer.auto.utils.Log;
+import com.gloomyer.auto.utils.*;
 import com.qiniu.util.Json;
 import com.qiniu.util.StringMap;
 
@@ -29,13 +26,14 @@ import java.util.Set;
 public class ReinForceRunner implements Runnable {
     private final String apkPath;
     private final File apkFile;
-    private final String mapKey;
+    private String mapKey;
 
     public ReinForceRunner(String apkPath) {
         this.apkPath = apkPath;
         this.apkFile = new File(apkPath);
-        mapKey = apkFile.getName().split("@")[0];
+        this.mapKey = apkFile.getName().split("@")[0];
     }
+
 
     public void run() {
         ApkInfo apkInfo = ApkUtils.read2Legu(apkPath);
@@ -82,17 +80,23 @@ public class ReinForceRunner implements Runnable {
         if (Scheduler.get().count() == 0) {
             //结束了
             BufferedOutputStream bos = null;
-            File file = new File(Config.getDefault().getDir().getOutputDir());
-            file = new File(file, "result.txt");
+            File optFile = new File(Config.getDefault().getDir().getOutputDir());
+            File file = new File(optFile, "result.txt");
 
             try {
                 bos = new BufferedOutputStream(new FileOutputStream(file));
                 HashMap<String, String> map = ApkUrlConfig.get().getMap();
                 Set<Map.Entry<String, String>> entries = map.entrySet();
                 for (Map.Entry<String, String> entry : entries) {
-                    bos.write(MessageFormat.format("{0}:{1}\n", entry.getKey(), entry.getValue()).getBytes());
+                    bos.write(MessageFormat.format("{0}:{1}\n\n", entry.getKey(), entry.getValue()).getBytes());
+                    QRUtils.createQrImg(
+                            500, 500,
+                            entry.getValue(),
+                            new File(optFile, entry.getKey() + ".jpg")
+                    );
                     bos.flush();
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

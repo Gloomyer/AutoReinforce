@@ -39,14 +39,16 @@ public class Main {
         //找到主app目录
         File appDir = Utils.findAppDir(config.getDir().getProjectSavePath());
 
-        //生成apk文件
-        Utils.createApkFile(appDir);
+        if (appDir != null) {
+            //生成apk文件
+            //Utils.createApkFile(appDir);
 
-//            //开始遍历app目录 找apk
-//            Utils.traversing(appDir);
-//        } else {
-//            Log.e("启动路径不存在!");
-//        }
+            //开始遍历app目录 找apk
+            Utils.traversing(appDir);
+        } else {
+            throw new RuntimeException("主app model 没有找到！");
+        }
+
 
     }
 
