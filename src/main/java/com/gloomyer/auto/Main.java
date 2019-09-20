@@ -41,7 +41,7 @@ public class Main {
 
         if (appDir != null) {
             //生成apk文件
-            //Utils.createApkFile(appDir);
+            Utils.createApkFile(appDir);
 
             //开始遍历app目录 找apk
             Utils.traversing(appDir);

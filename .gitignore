@@ -6,3 +6,4 @@ target/
 build/
 config.json
 .gradle
+out/
