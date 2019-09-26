@@ -8,6 +8,7 @@ import com.gloomyer.auto.query.IQuery;
 import com.gloomyer.auto.query.LGQuery;
 import com.gloomyer.auto.reinforce.IReinforce;
 import com.gloomyer.auto.reinforce.Legu;
+import com.gloomyer.auto.upload.AliUpload;
 import com.gloomyer.auto.upload.IUpload;
 import com.gloomyer.auto.upload.QiniuUpload;
 import com.gloomyer.auto.utils.*;
@@ -197,6 +198,8 @@ public class ReinForceRunner implements Runnable {
         IUpload upload;
         if ("qiniu".equals(Config.getDefault().getUpload().getUploadMethod())) {
             upload = QiniuUpload.get();
+        } else if ("ali".equals(Config.getDefault().getUpload().getUploadMethod())) {
+            upload = AliUpload.get();
         } else {
             throw new RuntimeException("上传方式未配置！");
         }

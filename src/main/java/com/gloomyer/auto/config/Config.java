@@ -105,6 +105,12 @@ public class Config {
         private String QNBucket;
         private String QNStartUrl;
 
+        private String ALAccessKey;
+        private String ALSecretKey;
+        private String ALBucket;
+        private String ALStartUrl;
+        private String ALEndpoint;
+
         public String getUploadMethod() {
             return uploadMethod;
         }
@@ -143,6 +149,46 @@ public class Config {
 
         public void setQNStartUrl(String QNStartUrl) {
             this.QNStartUrl = QNStartUrl;
+        }
+
+        public String getALAccessKey() {
+            return ALAccessKey;
+        }
+
+        public void setALAccessKey(String ALAccessKey) {
+            this.ALAccessKey = ALAccessKey;
+        }
+
+        public String getALSecretKey() {
+            return ALSecretKey;
+        }
+
+        public void setALSecretKey(String ALSecretKey) {
+            this.ALSecretKey = ALSecretKey;
+        }
+
+        public String getALBucket() {
+            return ALBucket;
+        }
+
+        public void setALBucket(String ALBucket) {
+            this.ALBucket = ALBucket;
+        }
+
+        public String getALStartUrl() {
+            return ALStartUrl;
+        }
+
+        public void setALStartUrl(String ALStartUrl) {
+            this.ALStartUrl = ALStartUrl;
+        }
+
+        public String getALEndpoint() {
+            return ALEndpoint;
+        }
+
+        public void setALEndpoint(String ALEndpoint) {
+            this.ALEndpoint = ALEndpoint;
         }
     }
 
