@@ -114,7 +114,7 @@ public class ReinForceRunner implements Runnable {
 
     //签名
     private File sign(File file) {
-        String retFile = file.getAbsolutePath().replace(".apk", ".sign.apk");
+        String retFile = file.getAbsolutePath().replace(".apk", ".signed.apk");
         String cmd = MessageFormat.format(
                 "{0} sign -ks {1} --ks-key-alias {2} --ks-pass pass:{3} --key-pass pass:{4} --out {5} {6}",
                 Config.getDefault().getSigner().getApksignerPath(),
@@ -138,7 +138,7 @@ public class ReinForceRunner implements Runnable {
             saveFile.mkdirs();
         }
 
-        saveFile = new File(saveFile, apkInfo.getFileName().replace(".apk", ".yjg.apk"));
+        saveFile = new File(saveFile, apkInfo.getFileName().replace(".apk", ".legu.apk"));
         if (apkUrl != null) {
             if (HttpUtils.download(apkUrl, saveFile)) {
                 Log.e("下载成功:{0}", saveFile.getAbsolutePath());
