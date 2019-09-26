@@ -18,6 +18,15 @@ Android加固方式一般有两种，一种是修改apk实现快速打包，第�
 
 这个工具是针对第二种做的适配。
 
+打开 app model 的AndroidManifest.xml
+
+在application节点下加入
+```xml
+   <meta-data
+        android:name="UMENG_CHANNEL"
+        android:value="${UMENG_CHANNEL_VALUE}"/>
+```
+
 打开 app model 的build.gradle文件
 
 首先在Android节点下加入:
