@@ -27,6 +27,7 @@ public class ReinForceRunner implements Runnable {
     private final String apkPath;
     private final File apkFile;
     private String mapKey;
+    private IQuery query;
 
     public ReinForceRunner(String apkPath) {
         this.apkPath = apkPath;
@@ -55,6 +56,12 @@ public class ReinForceRunner implements Runnable {
 
             //下载加固好的apk
             File file = saveApk(apkInfo, apkUrl);
+
+            //删除任务
+            if (query != null) {
+                StringMap map = Json.decode(info);
+                query.delete(map);
+            }
 
             //签名
             if (file != null) {
@@ -152,7 +159,6 @@ public class ReinForceRunner implements Runnable {
     //查询加固结果
     private String query(String info) {
         StringMap map = Json.decode(info);
-        IQuery query;
         if ("legu".equals(Config.getDefault().getReinforce().getReinforceMethod())) {
             query = new LGQuery();
         } else {
