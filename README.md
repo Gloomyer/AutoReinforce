@@ -4,17 +4,17 @@ Android繁琐的渠道包加固流程极其的浪费时间。
 
 所以决定写一个工具来完成这个事情。
 
-目前加固方式只支持乐谷。
+目前加固方式只支持乐加固。
 
 存储支持七牛&aliyun aliyun没有测试过。 手上没有alioss
 
 ### 资源准备
 1:乐固 申请sercetId&secretKey [申请地址](https://console.cloud.tencent.com/cam/capi)
 
-2:阿里云或者七牛云 申请sercetId&secretKey&bucket(需要运维/服务端提供一定支持)
+2:阿里云或者七牛云 申请sercetId&secretKey&bucket(需要运维/服务端提供支持)
 
 ### Android项目准备
-Android加固方式一般有两种，一种是修改apk实现快速打包，第二种是动态修改manefest文件。
+Android加固方式一般有两种，一种是修改apk实现快速打包，第二种是动态修改AndroidManifest文件。
 
 这个工具是针对第二种做的适配。
 
