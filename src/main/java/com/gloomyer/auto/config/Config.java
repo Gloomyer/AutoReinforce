@@ -143,8 +143,11 @@ public class Config {
             this.QNBucket = QNBucket;
         }
 
-        public String getQNStartUrl() {
-            return QNStartUrl;
+        public String getStartUrl() {
+            if ("qiniu".equals(uploadMethod))
+                return QNStartUrl;
+            else
+                return ALStartUrl;
         }
 
         public void setQNStartUrl(String QNStartUrl) {

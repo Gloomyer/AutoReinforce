@@ -43,7 +43,7 @@ public class ReinForceRunner implements Runnable {
             //循环上传apk
             do {
                 if (uploadinng(apkFile) != null)
-                    apkInfo.setAppUrl(Config.getDefault().getUpload().getQNStartUrl() + apkFile.getName());
+                    apkInfo.setAppUrl(Config.getDefault().getUpload().getStartUrl() + apkFile.getName());
             } while (apkInfo.getAppUrl() == null);
             //加入url map
             ApkUrlConfig.get().put(mapKey, false, apkInfo.getAppUrl());
@@ -71,7 +71,7 @@ public class ReinForceRunner implements Runnable {
 
             if (file != null) {
                 if (uploadinng(file) != null) {
-                    ApkUrlConfig.get().put(mapKey, true, Config.getDefault().getUpload().getQNStartUrl() + file.getName());
+                    ApkUrlConfig.get().put(mapKey, true, Config.getDefault().getUpload().getStartUrl() + file.getName());
                 }
 
             }
