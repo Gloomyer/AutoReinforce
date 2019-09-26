@@ -64,7 +64,7 @@ android {
 
 打开用idea打开项目项目直接执行 maven package即可
 
-[懒人包直接下载面编译]()
+[懒人包直接下载免编译](https://github.com/Gloomyer/AutoReinforce/releases/)
 
 jar文件随意放
 
