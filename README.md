@@ -106,3 +106,9 @@ jar文件随意放
   }
 }
 ```
+
+### 执行
+终端进入jar同级目录。 执行
+```shell script
+java -jar name.jar
+```
