@@ -87,25 +87,4 @@ public class Utils {
         Log.e("生产环境包生产 耗时:{0}毫秒", System.currentTimeMillis() - startTime);
     }
 
-    /**
-     * 递归获取apk
-     *
-     * @param file
-     */
-    public static void traversing(File file) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    traversing(f);
-                }
-            }
-        } else {
-            if (file.getName().endsWith("apk")) {
-                //apk
-                Scheduler.get().addRunner(new ReinForceRunner(file.getAbsolutePath()));
-            }
-        }
-    }
-
 }

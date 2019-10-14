@@ -1,6 +1,7 @@
 package com.gloomyer.auto;
 
 import com.gloomyer.auto.config.Config;
+import com.gloomyer.auto.query.ApkFindRunner;
 import com.gloomyer.auto.utils.Log;
 import com.gloomyer.auto.utils.ShellExecute;
 import com.gloomyer.auto.utils.Utils;
@@ -41,10 +42,16 @@ public class Main {
 
         if (appDir != null) {
             //生成apk文件
+            ApkFindRunner.start(appDir);
             Utils.createApkFile(appDir);
-
             //开始遍历app目录 找apk
-            Utils.traversing(appDir);
+            try {
+                Thread.sleep(10 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                ApkFindRunner.end();
+            }
         } else {
             throw new RuntimeException("主app model 没有找到！");
         }
