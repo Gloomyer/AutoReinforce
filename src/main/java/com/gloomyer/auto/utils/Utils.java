@@ -71,9 +71,10 @@ public class Utils {
     /**
      * 生成apk包
      *
-     * @param appDir
+     * @param appDir   目录
+     * @param callback 清理任务完成回调
      */
-    public static void createApkFile(File appDir) {
+    public static void createApkFile(File appDir, Runnable callback) {
         long startTime = System.currentTimeMillis();
 
         String gradlew = ShellExecute.isUnix() ? "./gradlew " : "gradlew.bat ";
@@ -81,6 +82,7 @@ public class Utils {
         ShellExecute.exec(gradlew + "clean");
         Log.e("项目清理完成.");
         //切换
+        callback.run();
         String cmd = gradlew + appDir.getName() + ":assembleRelease";
         Log.e("生成包命令:" + cmd);
         ShellExecute.exec(cmd);

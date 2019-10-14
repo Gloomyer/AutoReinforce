@@ -42,8 +42,7 @@ public class Main {
 
         if (appDir != null) {
             //生成apk文件
-            ApkFindRunner.start(appDir);
-            Utils.createApkFile(appDir);
+            Utils.createApkFile(appDir, () -> ApkFindRunner.start(appDir));
             //开始遍历app目录 找apk
             try {
                 Thread.sleep(10 * 1000);
