@@ -5,6 +5,7 @@ import com.gloomyer.auto.config.ApkUrlConfig;
 import com.gloomyer.auto.config.Config;
 import com.gloomyer.auto.domain.ApkInfo;
 import com.gloomyer.auto.query.IQuery;
+import com.gloomyer.auto.query.JGError;
 import com.gloomyer.auto.query.LGQuery;
 import com.gloomyer.auto.reinforce.IReinforce;
 import com.gloomyer.auto.reinforce.Legu;
@@ -49,11 +50,16 @@ public class ReinForceRunner implements Runnable {
             ApkUrlConfig.get().put(mapKey, false, apkInfo.getAppUrl());
             Log.i("apkInfo:{0}", apkInfo.toString());
 
-            //加固
-            String info = reinforce(apkInfo);
 
             //查询加固结果
-            String apkUrl = query(info);
+            String info;
+            String apkUrl;
+            do {
+                //加固
+                info = reinforce(apkInfo);
+                apkUrl = query(info);
+            } while ("-1".equals(apkUrl));
+
 
             //下载加固好的apk
             File file = saveApk(apkInfo, apkUrl);
@@ -116,8 +122,16 @@ public class ReinForceRunner implements Runnable {
                     }
                 }
             }
+            doZip();
             Log.e("总耗时:{0}秒", (System.currentTimeMillis() - Main.START_TIME) / 1000);
         }
+    }
+
+    /**
+     * 打压缩包
+     */
+    private void doZip() {
+
     }
 
     //签名
@@ -166,7 +180,14 @@ public class ReinForceRunner implements Runnable {
             throw new RuntimeException("加固方式未配置！");
         }
 
-        return query.query(map);
+        try {
+            return query.query(map);
+        } catch (JGError error) {
+            Log.e(getClass().getSimpleName(), "加固失败！");
+            query.delete(map);
+            //重新走上传
+            return "-1";
+        }
     }
 
     private String reinforce(ApkInfo apkInfo) {

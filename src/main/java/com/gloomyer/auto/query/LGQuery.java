@@ -44,7 +44,11 @@ public class LGQuery implements IQuery {
             DescribeShieldResultRequest req = DescribeShieldResultRequest.fromJsonString(params, DescribeShieldResultRequest.class);
 
             DescribeShieldResultResponse resp = client.DescribeShieldResult(req);
-
+            //2：运行中，3：异常
+            if (resp.getTaskStatus() == 3) {
+                //加固失败
+                throw new JGError();
+            }
             if (StringUtils.isNullOrEmpty(resp.getShieldInfo().getAppUrl())) {
                 try {
                     Thread.sleep(10 * 1000);
