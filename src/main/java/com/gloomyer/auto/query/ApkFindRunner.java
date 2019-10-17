@@ -56,11 +56,17 @@ public class ApkFindRunner implements Runnable {
             }
         } else {
             if (file.getName().endsWith("apk")) {
-                //apk
-                if (!keys.contains(file.getAbsolutePath())) {
-                    keys.add(file.getAbsolutePath());
-                    Scheduler.get().addRunner(new ReinForceRunner(file.getAbsolutePath()));
+                File parentFile = file.getParentFile();
+                if (parentFile != null) {
+                    if (parentFile.list() != null && parentFile.list().length > 1) {
+                        //apk 生成完毕
+                        if (!keys.contains(file.getAbsolutePath())) {
+                            keys.add(file.getAbsolutePath());
+                            Scheduler.get().addRunner(new ReinForceRunner(file.getAbsolutePath()));
+                        }
+                    }
                 }
+
             }
         }
     }
