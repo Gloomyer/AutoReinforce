@@ -49,7 +49,9 @@ public class LGQuery implements IQuery {
                 //加固失败
                 throw new JGError();
             }
-            if (StringUtils.isNullOrEmpty(resp.getShieldInfo().getAppUrl())) {
+
+            if (resp.getTaskStatus() == 2
+                    || StringUtils.isNullOrEmpty(resp.getShieldInfo().getAppUrl())) {
                 try {
                     Thread.sleep(10 * 1000);
                 } catch (InterruptedException e) {

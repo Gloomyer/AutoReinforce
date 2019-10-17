@@ -2,7 +2,6 @@ package com.gloomyer.auto.query;
 
 import com.gloomyer.auto.runner.ReinForceRunner;
 import com.gloomyer.auto.runner.Scheduler;
-import com.gloomyer.auto.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ public class ApkFindRunner implements Runnable {
      *
      * @param file
      */
+    @SuppressWarnings("ConstantConditions")
     private void traversing(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -58,12 +58,15 @@ public class ApkFindRunner implements Runnable {
             if (file.getName().endsWith("apk")) {
                 File parentFile = file.getParentFile();
                 if (parentFile != null) {
-                    if (parentFile.list() != null && parentFile.list().length > 1) {
-                        //apk 生成完毕
-                        if (!keys.contains(file.getAbsolutePath())) {
-                            keys.add(file.getAbsolutePath());
-                            Scheduler.get().addRunner(new ReinForceRunner(file.getAbsolutePath()));
+                    if (parentFile.listFiles() != null) {
+                        if (parentFile.listFiles().length > 1) {
+                            //apk 生成完毕
+                            if (!keys.contains(file.getAbsolutePath())) {
+                                keys.add(file.getAbsolutePath());
+                                Scheduler.get().addRunner(new ReinForceRunner(file.getAbsolutePath()));
+                            }
                         }
+
                     }
                 }
 
