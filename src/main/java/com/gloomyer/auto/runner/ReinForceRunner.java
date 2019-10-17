@@ -124,6 +124,7 @@ public class ReinForceRunner implements Runnable {
             }
             doZip();
             Log.e("总耗时:{0}秒", (System.currentTimeMillis() - Main.START_TIME) / 1000);
+            System.exit(0);
         }
     }
 
