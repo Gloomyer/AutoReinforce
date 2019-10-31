@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 public class Main {
     public static long START_TIME;
 
-    public static void main(String[] args) throws IOException {
+    public static void main1(String[] args) throws IOException {
         START_TIME = System.currentTimeMillis();
         readConfig();
         Config config = Config.getDefault();
