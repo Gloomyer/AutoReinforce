@@ -1,29 +1,35 @@
 package com.gloomyer.auto.api;
 
 import com.gloomyer.auto.pojo.resp.BaseResp;
-import com.gloomyer.auto.task.AutoTask;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.gloomyer.auto.service.AutoReinforceService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("task")
 public class TaskController {
 
-    final AutoTask autoTask;
+    private final AutoReinforceService service;
 
-    public TaskController(AutoTask autoTask) {
-        this.autoTask = autoTask;
+    public TaskController(AutoReinforceService service) {
+        this.service = service;
     }
 
-    @GetMapping("status")
+    @GetMapping
     public BaseResp<String> status() {
-        return BaseResp.success(autoTask.status());
+        return BaseResp.success(service.status());
     }
 
-    @GetMapping("action/{action}")
-    public BaseResp<String> action(@PathVariable("action") int action) {
+    @PostMapping
+    public BaseResp<String> action(@RequestBody HashMap<String, String> body) {
+        int action = Integer.parseInt(body.get("action"));
+        if (action == 1) {
+            //开始任务,
+            service.start(action);
+        }else{
+            service.stop(action);
+        }
         return BaseResp.success("success:" + action);
     }
 }

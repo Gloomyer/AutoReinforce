@@ -10,4 +10,8 @@ public interface AutoReinforceService {
      * @return 状态
      */
     String status();
+
+    void start(int action);
+
+    void stop(int action);
 }

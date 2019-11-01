@@ -1,4 +1,4 @@
-package com.gloomyer.auto.task;
+package com.gloomyer.auto.init;
 
 import com.gloomyer.auto.utils.ShellExecute;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 @Component
-public class OpenWeb implements Runnable {
+public class OpenWebChrome implements Runnable {
 
     @Value(value = "${server.port}")
     private int port;
 
-    public OpenWeb() {
+    public OpenWebChrome() {
         new Thread(this).start();
     }
 
