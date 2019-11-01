@@ -41,7 +41,7 @@
           <v-alert border="right" color="blue-grey" dark>项目目录</v-alert>
         </v-col>
         <v-col class="config_input">
-          <v-text-field :rules="rules" dark></v-text-field>
+          <v-text-field :rules="rules" v-model="projectDir" dark></v-text-field>
         </v-col>
         <div class="config_btn">
           <v-btn large color="primary">修改</v-btn>
@@ -52,7 +52,7 @@
           <v-alert border="right" color="blue-grey" dark>项目分支</v-alert>
         </v-col>
         <v-col class="config_input">
-          <v-text-field :rules="rules" dark></v-text-field>
+          <v-text-field :rules="rules" v-model="buildBranch" dark></v-text-field>
         </v-col>
         <div class="config_btn">
           <v-btn large color="primary">修改</v-btn>
@@ -63,7 +63,7 @@
           <v-alert border="right" color="blue-grey" dark>输出文件保存目录</v-alert>
         </v-col>
         <v-col class="config_input">
-          <v-text-field :rules="rules" dark></v-text-field>
+          <v-text-field :rules="rules" dark v-model="outputDir"></v-text-field>
         </v-col>
         <div class="config_btn">
           <v-btn large color="primary">修改</v-btn>
@@ -175,7 +175,11 @@
 <script>
 export default {
   data: () => ({
-    serviceStatus: null
+    serviceStatus: null,
+    config: null,
+    projectDir: "",
+    buildBranch: "",
+    outputDir: ""
   }),
   methods: {
     request() {
@@ -186,6 +190,20 @@ export default {
         response => {
           console.log("请求到的数据：" + response);
           this.serviceStatus = response.body;
+        },
+        error => {
+          console.log("请求错误：" + error);
+        }
+      );
+    },
+    getConfig() {
+      this.$http.get("http://192.168.10.185:8099/config").then(
+        response => {
+          console.log("请求到的数据：" + response);
+          this.config = response.body;
+          this.projectDir = this.config.data.dir.projectSavePath;
+          this.buildBranch = this.config.data.dir.buildBranch;
+          this.outputDir = this.config.data.dir.outputDir;
         },
         error => {
           console.log("请求错误：" + error);
@@ -209,7 +227,7 @@ export default {
     cancelTask() {
       this.$http
         .post("http://192.168.10.185:8099/task", {
-          action: 0
+          action: 2
         })
         .then(
           response => {
@@ -222,6 +240,7 @@ export default {
     }
   },
   created() {
+    this.getConfig();
     setInterval(this.request, 1000);
   }
 };
