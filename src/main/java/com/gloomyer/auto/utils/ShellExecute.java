@@ -3,7 +3,6 @@ package com.gloomyer.auto.utils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 
 /**
  * Shell执行器
@@ -50,14 +49,14 @@ public class ShellExecute {
             StringBuffer sb = new StringBuffer();
             String line;
             while ((line = br.readLine()) != null) {
-                Log.i(line);
+                LG.i(line);
                 sb.append(line).append("\n");
             }
 
             br = new BufferedReader(new InputStreamReader(process.getErrorStream(), "gbk"));
             sb = new StringBuffer();
             while ((line = br.readLine()) != null) {
-                Log.i(line);
+                LG.i(line);
                 sb.append(line).append("\n");
             }
 
@@ -82,14 +81,14 @@ public class ShellExecute {
             StringBuffer sb = new StringBuffer();
             String line;
             while ((line = br.readLine()) != null) {
-                Log.i(line);
+                LG.i(line);
                 sb.append(line).append("\n");
             }
 
             br = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             sb = new StringBuffer();
             while ((line = br.readLine()) != null) {
-                Log.i(line);
+                LG.i(line);
                 sb.append(line).append("\n");
             }
             return sb.toString();

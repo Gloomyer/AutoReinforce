@@ -1,7 +1,6 @@
 package com.gloomyer.auto.query;
 
-import com.gloomyer.auto.config.Config;
-import com.gloomyer.auto.utils.Log;
+import com.gloomyer.auto.utils.LG;
 import com.qiniu.util.StringMap;
 import com.qiniu.util.StringUtils;
 import com.tencentcloudapi.common.Credential;
@@ -20,18 +19,19 @@ public class LGQuery implements IQuery {
 
     private MsClient createMsClient(StringMap json) {
         String itemId = json.get("ItemId").toString();
-        String secretId = Config.getDefault().getReinforce().getLGSecretId();
-        String secretKey = Config.getDefault().getReinforce().getLGSecretKey();
+//        String secretId = Config.getDefault().getReinforce().getLGSecretId();
+//        String secretKey = Config.getDefault().getReinforce().getLGSecretKey();
+//
+//        Credential cred = new Credential(secretId, secretKey);
+//
+//        HttpProfile httpProfile = new HttpProfile();
+//        httpProfile.setEndpoint("ms.tencentcloudapi.com");
+//
+//        ClientProfile clientProfile = new ClientProfile();
+//        clientProfile.setHttpProfile(httpProfile);
 
-        Credential cred = new Credential(secretId, secretKey);
-
-        HttpProfile httpProfile = new HttpProfile();
-        httpProfile.setEndpoint("ms.tencentcloudapi.com");
-
-        ClientProfile clientProfile = new ClientProfile();
-        clientProfile.setHttpProfile(httpProfile);
-
-        return new MsClient(cred, "ap-shanghai", clientProfile);
+//        return new MsClient(cred, "ap-shanghai", clientProfile);
+        return null;
     }
 
     @Override
@@ -57,12 +57,12 @@ public class LGQuery implements IQuery {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Log.e("{0},第{1}次查询", itemId, ++count);
+                LG.e("{0},第{1}次查询", itemId, ++count);
                 return query(json);
             }
             return resp.getShieldInfo().getAppUrl();
         } catch (TencentCloudSDKException e) {
-            Log.e(e.toString());
+            LG.e(e.toString());
             return query(json);
         }
     }
@@ -81,7 +81,7 @@ public class LGQuery implements IQuery {
             String params = "{\"ItemIds\":[\"" + itemId + "\"]}";
             DeleteShieldInstancesRequest req = DeleteShieldInstancesRequest.fromJsonString(params, DeleteShieldInstancesRequest.class);
             DeleteShieldInstancesResponse resp = client.DeleteShieldInstances(req);
-            Log.e("删除ID:{0} 加固任务,结果:{1}", itemId, DeleteShieldInstancesRequest.toJsonString(resp));
+            LG.e("删除ID:{0} 加固任务,结果:{1}", itemId, DeleteShieldInstancesRequest.toJsonString(resp));
         } catch (Exception e) {
             e.printStackTrace();
         }

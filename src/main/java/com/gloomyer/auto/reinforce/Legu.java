@@ -1,8 +1,7 @@
 package com.gloomyer.auto.reinforce;
 
-import com.gloomyer.auto.config.Config;
 import com.gloomyer.auto.domain.ApkInfo;
-import com.gloomyer.auto.utils.Log;
+import com.gloomyer.auto.utils.LG;
 import com.google.gson.JsonObject;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
@@ -23,42 +22,43 @@ public class Legu implements IReinforce {
 
     @Override
     public String reinforce(ApkInfo apkInfo) {
-        try {
-            String secretId = Config.getDefault().getReinforce().getLGSecretId();
-            String secretKey = Config.getDefault().getReinforce().getLGSecretKey();
-            Credential cred = new Credential(secretId, secretKey);
-
-            HttpProfile httpProfile = new HttpProfile();
-            httpProfile.setEndpoint("ms.tencentcloudapi.com");
-
-            ClientProfile clientProfile = new ClientProfile();
-            clientProfile.setHttpProfile(httpProfile);
-
-            MsClient client = new MsClient(cred, "ap-shanghai", clientProfile);
-            //对象转json
-            CreateShieldInstanceRequest req = CreateShieldInstanceRequest.fromJsonString(getParams(apkInfo), CreateShieldInstanceRequest.class);
-            CreateShieldInstanceResponse resp = client.CreateShieldInstance(req);
-            String json = CreateShieldInstanceRequest.toJsonString(resp);
-            if (json.contains("ItemId")) {
-                return json;
-            } else {
-                try {
-                    Thread.sleep(30 * 1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return reinforce(apkInfo);
-            }
-        } catch (Exception e) {
-            Log.e(e.toString());
-            if(e.toString().contains("LimitExceeded-Max task count is 5"))
-                try {
-                    Thread.sleep(30 * 1000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            return reinforce(apkInfo);
-        }
+//        try {
+//            String secretId = Config.getDefault().getReinforce().getLGSecretId();
+//            String secretKey = Config.getDefault().getReinforce().getLGSecretKey();
+//            Credential cred = new Credential(secretId, secretKey);
+//
+//            HttpProfile httpProfile = new HttpProfile();
+//            httpProfile.setEndpoint("ms.tencentcloudapi.com");
+//
+//            ClientProfile clientProfile = new ClientProfile();
+//            clientProfile.setHttpProfile(httpProfile);
+//
+//            MsClient client = new MsClient(cred, "ap-shanghai", clientProfile);
+//            //对象转json
+//            CreateShieldInstanceRequest req = CreateShieldInstanceRequest.fromJsonString(getParams(apkInfo), CreateShieldInstanceRequest.class);
+//            CreateShieldInstanceResponse resp = client.CreateShieldInstance(req);
+//            String json = CreateShieldInstanceRequest.toJsonString(resp);
+//            if (json.contains("ItemId")) {
+//                return json;
+//            } else {
+//                try {
+//                    Thread.sleep(30 * 1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                return reinforce(apkInfo);
+//            }
+//        } catch (Exception e) {
+//            LG.e(e.toString());
+//            if(e.toString().contains("LimitExceeded-Max task count is 5"))
+//                try {
+//                    Thread.sleep(30 * 1000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            return reinforce(apkInfo);
+//        }
+        return null;
     }
 
     private String getParams(ApkInfo apkInfo) {

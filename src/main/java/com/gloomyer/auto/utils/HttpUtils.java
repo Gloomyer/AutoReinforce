@@ -1,6 +1,5 @@
 package com.gloomyer.auto.utils;
 
-import com.gloomyer.auto.config.Config;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

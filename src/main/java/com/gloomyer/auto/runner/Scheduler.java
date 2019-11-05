@@ -1,7 +1,12 @@
 package com.gloomyer.auto.runner;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class Scheduler implements Runnable {
     private static Scheduler ins = new Scheduler();
@@ -11,6 +16,8 @@ public class Scheduler implements Runnable {
     }
 
     private int count;
+    private ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 10, TimeUnit.MINUTES,
+            new LinkedBlockingDeque<>());
 
     synchronized int count() {
         return count;
@@ -29,7 +36,8 @@ public class Scheduler implements Runnable {
     public void addRunner(ReinForceRunner runner) {
         //runns.add(runner);
         add();
-        new Thread(runner).start();
+        executor.execute(runner);
+        //new Thread(runner).start();
     }
 
     @Override
