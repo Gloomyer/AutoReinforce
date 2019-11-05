@@ -85,7 +85,7 @@
     </dependencies>
 
     <build>
-        <finalName>pack${version}-</finalName>
+        <finalName>pack${version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
