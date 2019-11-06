@@ -4,6 +4,7 @@ import com.gloomyer.auto.annotation.DefaultImpl;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
+import java.text.MessageFormat;
 
 public class Utils {
 
@@ -93,27 +94,32 @@ public class Utils {
      *
      * @param appModelDir 目录
      */
-    public static void createApkFile(File appModelDir) {
-        createApkFile(appModelDir, null);
+    public static void createApkFile(File appModelDir, String model) {
+        createApkFile(appModelDir, model, null);
     }
 
     /**
      * 生成apk包
      *
      * @param appModelDir 目录
+     * @param model       0:debug,1:release
      * @param callback    清理任务完成回调
      */
-    public static void createApkFile(File appModelDir, Runnable callback) {
+    @SuppressWarnings("WeakerAccess")
+    public static void createApkFile(File appModelDir, String model, Runnable callback) {
         long startTime = System.currentTimeMillis();
 
-        String gradlew = ShellExecute.isUnix() ? "./gradlew " : "gradlew.bat ";
+        String gradlew = ShellExecute.isUnix() ? "./gradlew" : "gradlew.bat";
 
-        ShellExecute.exec(gradlew + "clean");
+        ShellExecute.exec(MessageFormat.format("{0} clean", gradlew));
         LG.e("项目清理完成.");
-        //切换
         if (callback != null) callback.run();
-//        String cmd = gradlew + appModelDir.getName() + ":assembleRelease";
-        String cmd = gradlew + appModelDir.getName() + ":assembleDebug";
+        String cmd = MessageFormat.format("{0} {1}:{2}{3}",
+                gradlew,
+                appModelDir.getName(),
+                "assemble",
+                Integer.parseInt(model) == 0 ? "Debug" : "Release"
+        );
         LG.e("生成包命令:" + cmd);
         ShellExecute.exec(cmd);
         LG.e("生产环境包生产 耗时:{0}毫秒", System.currentTimeMillis() - startTime);

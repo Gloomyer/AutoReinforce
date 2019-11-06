@@ -13,15 +13,29 @@ import java.util.List;
 
 public class BaleImpl implements Bale {
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public void bale(String projectDir, String branch, List<String> channels,
+    public void bale(String projectDir, String branch, String model,
+                     List<String> channels,
                      String saveDir, String replaceTextValue) {
         File appModelDir = changeDir(projectDir);
         operateGit(branch);
-        Utils.createApkFile(appModelDir);
+        Utils.createApkFile(appModelDir, model);
         File apkFile = traversing(appModelDir, saveDir);
-        System.out.println(apkFile);
+        if (apkFile == null) throw new RuntimeException("apk file 没有找到！");
+        LG.e("apkFile:{0}", apkFile.getAbsolutePath());
         createChannelApks(apkFile, replaceTextValue, channels);
+        deleteCacheFile(apkFile);
+    }
+
+    /**
+     * 删除零时文件
+     *
+     * @param apkFile apkFile
+     */
+    private void deleteCacheFile(File apkFile) {
+        FileUtils.deleteFile(apkFile);
+        FileUtils.deleteFile(new File(apkFile.getParent(), "output"));
     }
 
     /**

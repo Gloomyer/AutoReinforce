@@ -1,16 +1,11 @@
 package com.gloomyer.auto.upload;
 
-import com.gloomyer.auto.utils.LG;
-import com.qiniu.common.QiniuException;
-import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
-import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
-import com.qiniu.util.Auth;
 
 import java.io.File;
 
-public class QiniuUpload implements IUpload {
+public class QiniuUpload implements Upload {
 
     private static QiniuUpload ins = new QiniuUpload();
 

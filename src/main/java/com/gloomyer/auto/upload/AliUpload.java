@@ -1,13 +1,10 @@
 package com.gloomyer.auto.upload;
 
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.model.PutObjectResult;
 
 import java.io.File;
-import java.text.MessageFormat;
 
-public class AliUpload implements IUpload {
+public class AliUpload implements Upload {
 
     private static AliUpload ins = new AliUpload();
 

@@ -3,22 +3,9 @@ package com.gloomyer.auto.runner;
 import com.gloomyer.auto.Main;
 import com.gloomyer.auto.domain.ApkInfo;
 import com.gloomyer.auto.query.IQuery;
-import com.gloomyer.auto.query.JGError;
-import com.gloomyer.auto.query.LGQuery;
-import com.gloomyer.auto.reinforce.IReinforce;
-import com.gloomyer.auto.reinforce.Legu;
-import com.gloomyer.auto.upload.AliUpload;
-import com.gloomyer.auto.upload.IUpload;
-import com.gloomyer.auto.upload.QiniuUpload;
 import com.gloomyer.auto.utils.*;
-import com.qiniu.util.Json;
-import com.qiniu.util.StringMap;
 
 import java.io.*;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 加固任务

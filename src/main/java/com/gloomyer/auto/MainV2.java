@@ -2,6 +2,9 @@ package com.gloomyer.auto;
 
 import com.gloomyer.auto.bale.Bale;
 import com.gloomyer.auto.interfaces.StarterParams;
+import com.gloomyer.auto.upload.Upload;
+import com.gloomyer.auto.upload.UploadCache;
+import com.gloomyer.auto.upload.UploadFactory;
 import com.gloomyer.auto.utils.*;
 
 import java.io.File;
@@ -10,18 +13,20 @@ import java.util.List;
 
 public class MainV2 implements StarterParams {
 
-    //0:只打包 1:只加固,2:打包+加固
+    //0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固
     private static int action;
     private static List<String> channels;
     private static String saveDir;
     private static String projectPath;
     private static String projectBranch = ""; //空表示不进行切换分支行为
     private static String replaceTextValue;
+    private static String model = "0"; //模式 0:debug,1:release 默认0
+    private static String pgyApiKey; //蒲公英 apiKey
 
     public static void main(String[] args) {
         createParams(args);
         checkParams();
-        if (action == 2 || action == 0) {
+        if (action == 2 || action == 0 || action == 3) {
             long startTime = System.currentTimeMillis();
             //走打包流程,
             createApks();
@@ -29,6 +34,26 @@ public class MainV2 implements StarterParams {
             LG.e("打包耗时:{0}秒", (endTime - startTime) / 1000);
         }
 
+
+        if (action == 2) {
+            upload2Pgy();
+        }
+    }
+
+    /**
+     * 上传文件到蒲公英
+     */
+    private static void upload2Pgy() {
+        //蒲公英
+        Upload upload = UploadFactory.create(UploadFactory.UploadMethod.PGY);
+        UploadCache.pgyApiKey = pgyApiKey;
+        File dir = new File(saveDir);
+        File[] files = dir.listFiles();
+        assert upload != null;
+        assert files != null;
+        for (File file : files) {
+            LG.e("{0}", upload.upload(file));
+        }
     }
 
     /**
@@ -55,6 +80,17 @@ public class MainV2 implements StarterParams {
             throw new RuntimeException("签名信息必须配置!");
         }
 
+        if (action == 2 && channels.size() > 1) {
+            String channel = channels.get(0);
+            LG.e("蒲公英上传模式只支持一个渠道包，只打:{0}渠道", channel);
+            channels.clear();
+            channels.add(channel);
+        }
+
+        if (action == 2 && StringUtils.isEmpty(pgyApiKey)) {
+            throw new RuntimeException("action==2，蒲公英Apikey必须配置!");
+        }
+
         File saveDir = new File(MainV2.saveDir);
         FileUtils.deleteFile(saveDir);
         //noinspection ResultOfMethodCallIgnored
@@ -79,6 +115,8 @@ public class MainV2 implements StarterParams {
 
             if (KEY_ACTION.equalsIgnoreCase(key)) {
                 action = Integer.parseInt(value);
+            } else if (KEY_MODEL.equalsIgnoreCase(key)) {
+                model = value;
             } else if (KEY_CHANNEL.equalsIgnoreCase(key)) {
                 if (channels == null) channels = new ArrayList<>();
                 channels.add(value);
@@ -100,6 +138,8 @@ public class MainV2 implements StarterParams {
                 SignUtils.setKeyAlias(value);
             } else if (KEY_SIGN_KEY_PASSWORD.equalsIgnoreCase(key)) {
                 SignUtils.setKeyPassword(value);
+            } else if (KEY_PGY_API_KEY.equalsIgnoreCase(key)) {
+                pgyApiKey = value;
             }
         }
     }
@@ -110,6 +150,11 @@ public class MainV2 implements StarterParams {
     private static void createApks() {
         Bale impl = Utils.getDefaultImpl(Bale.class);
         assert impl != null;
-        impl.bale(projectPath, projectBranch, channels, saveDir, replaceTextValue);
+        impl.bale(projectPath,
+                projectBranch,
+                model,
+                channels,
+                saveDir,
+                replaceTextValue);
     }
 }

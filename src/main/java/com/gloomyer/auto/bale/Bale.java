@@ -14,9 +14,10 @@ public interface Bale {
      *
      * @param projectDir       项目目录
      * @param branch           分支
+     * @param model            0:debug 1:release
      * @param channels         渠道
      * @param saveDir          保存目录
      * @param replaceTextValue 渠道预留字符串
      */
-    void bale(String projectDir, String branch, List<String> channels, String saveDir, String replaceTextValue);
+    void bale(String projectDir, String branch, String model, List<String> channels, String saveDir, String replaceTextValue);
 }
