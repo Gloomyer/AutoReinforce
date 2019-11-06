@@ -1,30 +1,69 @@
+## 构建说明
+项目通过apktools 来逆向生成的包，然后动态修改渠道实现快速打包。
+
+实测8个渠道7分钟提升至只需要192秒(3分钟12秒)
+
+需要对项目作出如下配置.
+
+我们的项目是和友盟配合，所以现在manifest文件中加入如下字段:
+
+```xml
+<meta-data
+    android:name="UMENG_CHANNEL"
+    android:value="NOT_CONFIGURED_CHANNEL_VALUE" />
+```
+
+value里面的字段需要记住.
+
+然后在app model下的gradle文件中修改apk名称生成规则.
+```groovy
+applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        //outputFileName = "${variant.productFlavors[0].name}"+
+        outputFileName = "NOT_CONFIGURED_CHANNEL_VALUE"+
+        "@name_${defaultConfig.versionName}"+
+        "@code_${defaultConfig.versionCode}"+
+        "@${isRelease ? 'Release' : 'Debug'}.apk"
+    }
+}
+```
+
+上面的规则可以自定义，但是NOT_CONFIGURED_CHANNEL_VALUE请保留。
+
+build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHANNEL_VALUE
+
+可以换成自己想要的，但是请保证两者的一致性。
+
+然后在运行程序的时候将这个值传递给我。 利用-RTV参数 具体请看参数说明和use demos
+
+
 ## 参数说明:
 
-> -A (*)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固
+> -A (*)(action)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固
 
-> -PAK 蒲公英ApiKey， 如果action != 2 这个不用填， 但是当action==2这个为必填
+> -PAK (pgy api key)蒲公英ApiKey， 如果action != 2 这个不用填， 但是当action==2这个为必填
 
-> -M 打包模式0:debug包，1:release包，默认0
+> -M (model)打包模式0:debug包，1:release包，默认0
 
-> -C (*)多渠道配置 正常可以多个，但是当acton==2，渠道只允许配置一个,如果配置了多个将只会构建第一个
+> -C (*)(channel)多渠道配置 正常可以多个，但是当acton==2，渠道只允许配置一个,如果配置了多个将只会构建第一个
 
-> -S (*)输出文件的保存目录
+> -S (*)(save)输出文件的保存目录
 
-> -PP (*)项目路径
+> -PP (*)(project path)项目路径
 
-> -PB 指定打包项目分支,默认master
+> -PB (project branch)指定打包项目分支,默认master
 
-> -RTV (*)项目中预指的替换字符串
+> -RTV (*)(replace text value)项目中预指的替换字符串
 
-> -SCMD (*)签名工具全路径
+> -SCMD (*)(sign cmd)签名工具全路径
 
-> -SSF (*)签名全路径
+> -SSF (*)(sign store file)签名全路径
 
-> -SSP (*)签名密码
+> -SSP (*)(sign store password)签名密码
 
-> -SKA (*)签名别名
+> -SKA (*)(sign key alias)签名别名
 
-> -SKP (*)签名别名密码
+> -SKP (*)(sign keyAlias password)签名别名密码
 
 ## Use Demos
 
