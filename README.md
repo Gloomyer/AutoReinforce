@@ -116,7 +116,7 @@ java -jar pack2.0.0.jar \
 ```shell
 java -jar pack2.0.0.jar \
 -A 2 \
--M 0 \
+-M 1 \
 -PAG 替换为你的蒲公英ApiKey \
 -C ructrip \
 -S /Users/gloomy/Downloads/autos \
