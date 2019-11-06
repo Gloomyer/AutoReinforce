@@ -33,11 +33,10 @@ public class HttpClientGenerateImpl implements HttpClientGenerate {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.sslSocketFactory(sslSocketFactory);
             builder.hostnameVerifier((hostname, session) -> true);
+            return builder.build();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
-
-        return null;
     }
 }
