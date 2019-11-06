@@ -49,10 +49,10 @@ java -jar pack2.0.0.jar \
 -PB 1.0.3 \
 -RTV NOT_CONFIGURED_CHANNEL_VALUE \
 -SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
--SSF /Users/gloomy/Projects/rucheng-android/keystore/kaistart.keystore \
--SSP kaishizhongchou. \
--SKA kaistart.keystore \
--SKP kaishizhongchou.
+-SSF 待替换 \
+-SSP 待替换 \
+-SKA 待替换 \
+-SKP 待替换
 ```
 
 ### 打一个Debug包并且提交到蒲公英平台
@@ -60,17 +60,17 @@ java -jar pack2.0.0.jar \
 java -jar pack2.0.0.jar \
 -A 2 \
 -M 0 \
--PAG 82dca5392cdfe2cec4e1a65e48532b29 \
+-PAG 替换为你的蒲公英ApiKey \
 -C ructrip \
 -S /Users/gloomy/Downloads/autos \
 -PP /Users/gloomy/Projects/rucheng-android \
 -PB 1.0.3 \
 -RTV NOT_CONFIGURED_CHANNEL_VALUE \
 -SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
--SSF /Users/gloomy/Projects/rucheng-android/keystore/kaistart.keystore \
--SSP kaishizhongchou. \
--SKA kaistart.keystore \
--SKP kaishizhongchou.
+-SSF 待替换 \
+-SSP 待替换 \
+-SKA 待替换 \
+-SKP 待替换
 ```
 
 ### 打一个Release包并且提交到蒲公英平台
@@ -78,15 +78,15 @@ java -jar pack2.0.0.jar \
 java -jar pack2.0.0.jar \
 -A 2 \
 -M 0 \
--PAG 82dca5392cdfe2cec4e1a65e48532b29 \
+-PAG 替换为你的蒲公英ApiKey \
 -C ructrip \
 -S /Users/gloomy/Downloads/autos \
 -PP /Users/gloomy/Projects/rucheng-android \
 -PB 1.0.3 \
 -RTV NOT_CONFIGURED_CHANNEL_VALUE \
 -SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
--SSF /Users/gloomy/Projects/rucheng-android/keystore/kaistart.keystore \
--SSP kaishizhongchou. \
--SKA kaistart.keystore \
--SKP kaishizhongchou.
+-SSF 待替换 \
+-SSP 待替换 \
+-SKA 待替换 \
+-SKP 待替换
 ```
