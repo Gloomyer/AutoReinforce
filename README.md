@@ -1,14 +1,12 @@
-## like:
+## 参数说明:
 
-将需要的demo下的命令的复制 保存到当前目录 任意名称.sh
+> -A (*)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固
 
-修改对应路径,即可完成打包
+> -PAK 蒲公英ApiKey， 如果action != 2 这个不用填， 但是当action==2这个为必填
 
-参数说明（带*表示必填）
+> -M 打包模式0:debug包，1:release包，默认0
 
-> -A (*)打包方式0:只打包,1:只加固,2:打包+加固
-
-> -C (*)多渠道配置 可以多个
+> -C (*)多渠道配置 正常可以多个，但是当acton==2，渠道只允许配置一个,如果配置了多个将只会构建第一个
 
 > -S (*)输出文件的保存目录
 
@@ -28,13 +26,16 @@
 
 > -SKP (*)签名别名密码
 
-## demos
+## Use Demos
 
-### 打多个渠道包到指定目录
+选择下面你需要的方式 保存到当前目录 任意名称.sh
+
+### 打多个Release渠道包到指定目录
 
 ```shell
 java -jar pack2.0.0.jar \
 -A 0 \
+-M 1 \
 -C ructrip \
 -C miui \
 -C flyme \
@@ -43,6 +44,42 @@ java -jar pack2.0.0.jar \
 -C qh360 \
 -C oppo \
 -C vivo \
+-S /Users/gloomy/Downloads/autos \
+-PP /Users/gloomy/Projects/rucheng-android \
+-PB 1.0.3 \
+-RTV NOT_CONFIGURED_CHANNEL_VALUE \
+-SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
+-SSF /Users/gloomy/Projects/rucheng-android/keystore/kaistart.keystore \
+-SSP kaishizhongchou. \
+-SKA kaistart.keystore \
+-SKP kaishizhongchou.
+```
+
+### 打一个Debug包并且提交到蒲公英平台
+```shell
+java -jar pack2.0.0.jar \
+-A 2 \
+-M 0 \
+-PAG 82dca5392cdfe2cec4e1a65e48532b29 \
+-C ructrip \
+-S /Users/gloomy/Downloads/autos \
+-PP /Users/gloomy/Projects/rucheng-android \
+-PB 1.0.3 \
+-RTV NOT_CONFIGURED_CHANNEL_VALUE \
+-SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
+-SSF /Users/gloomy/Projects/rucheng-android/keystore/kaistart.keystore \
+-SSP kaishizhongchou. \
+-SKA kaistart.keystore \
+-SKP kaishizhongchou.
+```
+
+### 打一个Release包并且提交到蒲公英平台
+```shell
+java -jar pack2.0.0.jar \
+-A 2 \
+-M 0 \
+-PAG 82dca5392cdfe2cec4e1a65e48532b29 \
+-C ructrip \
 -S /Users/gloomy/Downloads/autos \
 -PP /Users/gloomy/Projects/rucheng-android \
 -PB 1.0.3 \
