@@ -36,7 +36,6 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 然后在运行程序的时候将这个值传递给我。 利用-RTV参数 具体请看参数说明和use demos
 
-
 ## 参数说明:
 
 > -A (*)(action)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固

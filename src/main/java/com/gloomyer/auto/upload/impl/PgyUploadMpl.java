@@ -1,17 +1,19 @@
 package com.gloomyer.auto.upload.impl;
 
+import com.gloomyer.auto.generate.HttpClientGenerate;
 import com.gloomyer.auto.upload.Upload;
 import com.gloomyer.auto.upload.UploadCache;
 import com.gloomyer.auto.utils.LG;
 import com.gloomyer.auto.utils.ShellExecute;
+import com.gloomyer.auto.utils.Utils;
 import okhttp3.*;
 
 import java.io.File;
-import java.io.IOException;
 
 public class PgyUploadMpl implements Upload {
     private static final String PGY_RUL = "https://www.pgyer.com/apiv2/app/upload";
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public String upload(File file) {
         //String cmd = String.format(
@@ -22,7 +24,7 @@ public class PgyUploadMpl implements Upload {
         //LG.e("upload cmd:{0}", cmd);
         LG.e("蒲公英平台开始上传数据!");
         long start = System.currentTimeMillis();
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = Utils.getDefaultImpl(HttpClientGenerate.class).generate();
         MultipartBody.Builder bodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         RequestBody body = RequestBody.create(MediaType.parse("file/*"), file);
         bodyBuilder.addFormDataPart("file", file.getName(), body);
