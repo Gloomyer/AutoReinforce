@@ -8,6 +8,11 @@ import javax.net.ssl.*;
 public class HttpClientGenerateImpl implements HttpClientGenerate {
     @Override
     public OkHttpClient generate() {
+        return generateBuilder().build();
+    }
+
+    @Override
+    public OkHttpClient.Builder generateBuilder() {
         final TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     @Override
@@ -33,7 +38,7 @@ public class HttpClientGenerateImpl implements HttpClientGenerate {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.sslSocketFactory(sslSocketFactory);
             builder.hostnameVerifier((hostname, session) -> true);
-            return builder.build();
+            return builder;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());

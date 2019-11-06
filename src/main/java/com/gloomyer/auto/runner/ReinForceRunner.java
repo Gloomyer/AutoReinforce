@@ -1,9 +1,7 @@
 package com.gloomyer.auto.runner;
 
-import com.gloomyer.auto.Main;
 import com.gloomyer.auto.domain.ApkInfo;
 import com.gloomyer.auto.query.IQuery;
-import com.gloomyer.auto.utils.*;
 
 import java.io.*;
 
@@ -108,7 +106,7 @@ public class ReinForceRunner implements Runnable {
                 }
             }
             doZip();
-            LG.e("总耗时:{0}秒", (System.currentTimeMillis() - Main.START_TIME) / 1000);
+            //LG.e("总耗时:{0}秒", (System.currentTimeMillis() - Main.START_TIME) / 1000);
             System.exit(0);
         }
     }

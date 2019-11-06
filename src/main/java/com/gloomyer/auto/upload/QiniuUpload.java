@@ -5,7 +5,7 @@ import com.qiniu.storage.UploadManager;
 
 import java.io.File;
 
-public class QiniuUpload implements Upload {
+public class QiniuUpload  {
 
     private static QiniuUpload ins = new QiniuUpload();
 
@@ -16,7 +16,6 @@ public class QiniuUpload implements Upload {
     private static Configuration cfg;
     private static UploadManager uploadManager;
 
-    @Override
     public String upload(File file) {
 //              if (Config.getDefault().QNIsEmpty()) {
 //            throw new RuntimeException("七牛参数未配置!");

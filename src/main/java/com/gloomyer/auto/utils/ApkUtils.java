@@ -9,10 +9,9 @@ import java.io.IOException;
 
 public class ApkUtils {
 
-    public static ApkInfo read2Legu(String path) {
+    public static ApkInfo read2Legu(File file) {
         ApkFile apkParser = null;
         try {
-            File file = new File(path);
             apkParser = new ApkFile(file);
             ApkMeta meta = apkParser.getApkMeta();
             ApkInfo info = new ApkInfo();

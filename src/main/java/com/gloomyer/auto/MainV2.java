@@ -2,6 +2,7 @@ package com.gloomyer.auto;
 
 import com.gloomyer.auto.bale.Bale;
 import com.gloomyer.auto.interfaces.StarterParams;
+import com.gloomyer.auto.protection.Protection;
 import com.gloomyer.auto.upload.Upload;
 import com.gloomyer.auto.upload.UploadCache;
 import com.gloomyer.auto.upload.UploadFactory;
@@ -22,6 +23,14 @@ public class MainV2 implements StarterParams {
     private static String replaceTextValue;
     private static String model = "0"; //模式 0:debug,1:release 默认0
     private static String pgyApiKey; //蒲公英 apiKey
+    private static String uploadMethod;
+    private static String uploadAccessKey;
+    private static String uploadSecretKey;
+    private static String uploadBucketName;
+    private static String uploadUrlPrefix;
+    private static String protectionSecretId;
+    private static String protectionSecretKey;
+    private static int protectionMaxTaskSize = 5; //同时加固的任务最大数量
 
     public static void main(String[] args) {
         createParams(args);
@@ -34,10 +43,32 @@ public class MainV2 implements StarterParams {
             LG.e("打包耗时:{0}秒", (endTime - startTime) / 1000);
         }
 
-
         if (action == 2) {
             upload2Pgy();
         }
+
+        if (action == 1 || action == 3) {
+            protection();
+        }
+    }
+
+    /**
+     * 走加固流程
+     */
+    private static void protection() {
+        Protection impl = Utils.getDefaultImpl(Protection.class);
+        assert impl != null;
+        impl.protection(uploadMethod,
+                uploadAccessKey,
+                uploadSecretKey,
+                uploadBucketName,
+                uploadUrlPrefix,
+                protectionSecretId,
+                protectionSecretKey,
+                protectionMaxTaskSize,
+                saveDir
+        );
+
     }
 
     /**
@@ -91,10 +122,26 @@ public class MainV2 implements StarterParams {
             throw new RuntimeException("action==2，蒲公英Apikey必须配置!");
         }
 
-        File saveDir = new File(MainV2.saveDir);
-        FileUtils.deleteFile(saveDir);
-        //noinspection ResultOfMethodCallIgnored
-        saveDir.mkdirs();
+        if (action == 1 || action == 3) {
+            if (StringUtils.isEmpty(uploadAccessKey)
+                    || StringUtils.isEmpty(uploadMethod)
+                    || StringUtils.isEmpty(uploadSecretKey)
+                    || StringUtils.isEmpty(uploadBucketName)
+                    || StringUtils.isEmpty(uploadUrlPrefix)
+                    || StringUtils.isEmpty(protectionSecretId)
+                    || StringUtils.isEmpty(protectionSecretKey)) {
+                throw new RuntimeException("加固必须提供" +
+                        "uploadMethod/accessKey/secretKey/bucketName/urlPrefix/protectionSecretId/protectionSecretKey");
+            }
+        }
+
+        //如果是只加固，将利用之前生成的包，所以不走删除逻辑
+        if (action != 1) {
+            File saveDir = new File(MainV2.saveDir);
+            FileUtils.deleteFile(saveDir);
+            //noinspection ResultOfMethodCallIgnored
+            saveDir.mkdirs();
+        }
     }
 
     /**
@@ -140,6 +187,20 @@ public class MainV2 implements StarterParams {
                 SignUtils.setKeyPassword(value);
             } else if (KEY_PGY_API_KEY.equalsIgnoreCase(key)) {
                 pgyApiKey = value;
+            } else if (KEY_UPLOAD_METHOD.equalsIgnoreCase(key)) {
+                uploadMethod = value;
+            } else if (KEY_UPLOAD_ACCESS_KEY.equalsIgnoreCase(key)) {
+                uploadAccessKey = value;
+            } else if (KEY_UPLOAD_SECRET_KEY.equalsIgnoreCase(key)) {
+                uploadSecretKey = value;
+            } else if (KEY_UPLOAD_BUCKET_NAME.equalsIgnoreCase(key)) {
+                uploadBucketName = value;
+            } else if (KEY_UPLOAD_URL_PREFIX.equalsIgnoreCase(key)) {
+                uploadUrlPrefix = value;
+            } else if (KEY_PROTECTION_SECRETID.equalsIgnoreCase(key)) {
+                protectionSecretId = value;
+            } else if (KEY_PROTECTION_SECRETKEY.equalsIgnoreCase(key)) {
+                protectionSecretKey = value;
             }
         }
     }

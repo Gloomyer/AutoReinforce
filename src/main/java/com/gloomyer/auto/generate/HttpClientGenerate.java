@@ -7,4 +7,5 @@ import okhttp3.OkHttpClient;
 @DefaultImpl(clazz = HttpClientGenerateImpl.class)
 public interface HttpClientGenerate {
     OkHttpClient generate();
+    OkHttpClient.Builder generateBuilder();
 }

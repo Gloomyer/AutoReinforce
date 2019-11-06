@@ -4,7 +4,7 @@ import com.aliyun.oss.OSS;
 
 import java.io.File;
 
-public class AliUpload implements Upload {
+public class AliUpload {
 
     private static AliUpload ins = new AliUpload();
 
@@ -12,7 +12,6 @@ public class AliUpload implements Upload {
         return ins;
     }
 
-    @Override
     public String upload(File file) {
         OSS ossClient = null;
         try {
