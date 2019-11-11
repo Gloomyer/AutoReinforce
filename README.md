@@ -165,3 +165,30 @@ java -jar pack2.0.0.jar \
 -QHUN 360账户 \
 -QHPW 360密码
 ```
+
+### 打正式库多个包并且加固，使用乐固
+```shell script
+java -jar pack2.0.0.jar \
+-A 3 \
+-M 1 \
+-C ructrip \
+-C miui \
+-C flyme \
+-C tencent \
+-C huawei \
+-C qh360 \
+-C oppo \
+-C vivo \
+-S /Users/gloomy/Downloads/autos \
+-PP /Users/gloomy/Projects/rucheng-android \
+-PB master \
+-RTV NOT_CONFIGURED_CHANNEL_VALUE \
+-SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
+-SSF 待替换 \
+-SSP 待替换 \
+-SKA 待替换 \
+-SKP 待替换 \
+-PM legu \
+-PSI 乐固secretId \
+-PSK 乐固secretKey
+```
