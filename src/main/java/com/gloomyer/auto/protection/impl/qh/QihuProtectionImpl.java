@@ -1,6 +1,5 @@
 package com.gloomyer.auto.protection.impl.qh;
 
-import com.aliyun.oss.common.utils.LogUtils;
 import com.gloomyer.auto.protection.Protection;
 import com.gloomyer.auto.protection.ProtectionCache;
 import com.gloomyer.auto.protection.impl.CompileTask;

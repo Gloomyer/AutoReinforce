@@ -50,7 +50,7 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 > -PP (*)(project path)项目路径
 
-> -PB (project branch)指定打包项目分支,默认master
+> -PB (project branch)指定打包项目分支,默认当前分支,不进行切换分支行为
 
 > -RTV (*)(replace text value)项目中预指的替换字符串
 
@@ -64,13 +64,22 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 > -SKP (*)(sign keyAlias password)签名别名密码
 
+> -PM (protectionMethod) 加固方式，非必填，默认legu 支持2个参数[legu,qihoo]
+
+> -PSI (protection secretid) 如果action==3 || action ==1 并且pm==空或者pm==legu 这个为必填，乐固secretId
+
+> -PSK (protection secretKey) 如果action==3 || action ==1 并且pm==空或者pm==legu 这个为必填，乐固secretKey
+
+> -QHUN (qihoo username) 如果action==3 || action ==1 并且pm==qihoo 这个为必填 qihoo 360 账户
+
+> -QHPW (qihoo password) 如果action==3 || action ==1 并且pm==qihoo 这个为必填 qihoo 360 密码
 ## Use Demos
 
 选择下面你需要的方式 保存到当前目录 任意名称.sh
 
 ### 打多个Release渠道包到指定目录
 
-```shell
+```shell script
 java -jar pack2.0.0.jar \
 -A 0 \
 -M 1 \
@@ -94,7 +103,7 @@ java -jar pack2.0.0.jar \
 ```
 
 ### 打一个Debug包并且提交到蒲公英平台
-```shell
+```shell script
 java -jar pack2.0.0.jar \
 -A 2 \
 -M 0 \
@@ -112,7 +121,7 @@ java -jar pack2.0.0.jar \
 ```
 
 ### 打一个Release包并且提交到蒲公英平台
-```shell
+```shell script
 java -jar pack2.0.0.jar \
 -A 2 \
 -M 1 \
@@ -127,4 +136,32 @@ java -jar pack2.0.0.jar \
 -SSP 待替换 \
 -SKA 待替换 \
 -SKP 待替换
+```
+
+
+### 打正式库多个包并且加固，使用360加固
+```shell script
+java -jar pack2.0.0.jar \
+-A 3 \
+-M 1 \
+-C ructrip \
+-C miui \
+-C flyme \
+-C tencent \
+-C huawei \
+-C qh360 \
+-C oppo \
+-C vivo \
+-S /Users/gloomy/Downloads/autos \
+-PP /Users/gloomy/Projects/rucheng-android \
+-PB master \
+-RTV NOT_CONFIGURED_CHANNEL_VALUE \
+-SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
+-SSF 待替换 \
+-SSP 待替换 \
+-SKA 待替换 \
+-SKP 待替换 \
+-PM qihoo \
+-QHUN 360账户 \
+-QHPW 360密码
 ```
