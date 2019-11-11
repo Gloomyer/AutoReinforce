@@ -13,9 +13,7 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.sun.istack.internal.NotNull;
 import okhttp3.Call;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.codehaus.jettison.json.JSONObject;
@@ -97,7 +95,6 @@ public class QiniuUploadImpl implements Upload {
         return false;
     }
 
-    @NotNull
     private String getFileInfoUrl(String fileUrl) {
         return MessageFormat.format("{0}?qhash/md5", fileUrl);
     }
