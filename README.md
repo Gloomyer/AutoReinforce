@@ -75,6 +75,7 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 > -QHUN (qihoo username) 如果action==3 || action ==1 并且pm==qihoo 这个为必填 qihoo 360 账户
 
 > -QHPW (qihoo password) 如果action==3 || action ==1 并且pm==qihoo 这个为必填 qihoo 360 密码
+
 ## Use Demos
 
 选择下面你需要的方式 保存到当前目录 任意名称.sh
