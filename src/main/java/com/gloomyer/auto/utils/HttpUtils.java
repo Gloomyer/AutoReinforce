@@ -8,7 +8,6 @@ import java.io.*;
 
 public class HttpUtils {
     public static boolean download(final String url, File saveFile) {
-        final long startTime = System.currentTimeMillis();
         Request request = new Request.Builder().url(url).build();
         OkHttpClient client = new OkHttpClient();
         Response response = null;

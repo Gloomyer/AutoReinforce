@@ -3,6 +3,8 @@ package com.gloomyer.auto;
 import com.gloomyer.auto.bale.Bale;
 import com.gloomyer.auto.interfaces.StarterParams;
 import com.gloomyer.auto.protection.Protection;
+import com.gloomyer.auto.protection.ProtectionCache;
+import com.gloomyer.auto.protection.ProtectionFactory;
 import com.gloomyer.auto.upload.Upload;
 import com.gloomyer.auto.upload.UploadCache;
 import com.gloomyer.auto.upload.UploadFactory;
@@ -30,7 +32,10 @@ public class MainV2 implements StarterParams {
     private static String uploadUrlPrefix;
     private static String protectionSecretId;
     private static String protectionSecretKey;
+    private static String qihooUsername;
+    private static String qihooPassword;
     private static int protectionMaxTaskSize = 5; //同时加固的任务最大数量
+    private static String protectionMethod = "legu";
 
     public static void main(String[] args) {
         createParams(args);
@@ -56,8 +61,10 @@ public class MainV2 implements StarterParams {
      * 走加固流程
      */
     private static void protection() {
-        Protection impl = Utils.getDefaultImpl(Protection.class);
+        Protection impl = ProtectionFactory.create(protectionMethod);
         assert impl != null;
+        ProtectionCache.qihooUserName = qihooUsername;
+        ProtectionCache.qihooPassword = qihooPassword;
         impl.protection(uploadMethod,
                 uploadAccessKey,
                 uploadSecretKey,
@@ -127,11 +134,26 @@ public class MainV2 implements StarterParams {
                     || StringUtils.isEmpty(uploadMethod)
                     || StringUtils.isEmpty(uploadSecretKey)
                     || StringUtils.isEmpty(uploadBucketName)
-                    || StringUtils.isEmpty(uploadUrlPrefix)
-                    || StringUtils.isEmpty(protectionSecretId)
-                    || StringUtils.isEmpty(protectionSecretKey)) {
+                    || StringUtils.isEmpty(uploadUrlPrefix)) {
                 throw new RuntimeException("加固必须提供" +
-                        "uploadMethod/accessKey/secretKey/bucketName/urlPrefix/protectionSecretId/protectionSecretKey");
+                        "uploadMethod/accessKey/secretKey/bucketName/urlPrefix");
+            }
+
+            Protection protection = ProtectionFactory.create(protectionMethod);
+            if (protection == null) {
+                throw new RuntimeException("不支持的加固方式!");
+            }
+
+            if ("qihoo".equalsIgnoreCase(protectionMethod)) {
+                if (StringUtils.isEmpty(qihooUsername)
+                        || StringUtils.isEmpty(qihooPassword)) {
+                    throw new RuntimeException("360加固请提供加固账户密码");
+                }
+            } else {
+                if (StringUtils.isEmpty(protectionSecretId)
+                        || StringUtils.isEmpty(protectionSecretKey)) {
+                    throw new RuntimeException("乐固请提供SecretId/SecretKey");
+                }
             }
         }
 
@@ -142,6 +164,7 @@ public class MainV2 implements StarterParams {
             //noinspection ResultOfMethodCallIgnored
             saveDir.mkdirs();
         }
+
     }
 
     /**
@@ -201,6 +224,12 @@ public class MainV2 implements StarterParams {
                 protectionSecretId = value;
             } else if (KEY_PROTECTION_SECRETKEY.equalsIgnoreCase(key)) {
                 protectionSecretKey = value;
+            } else if (KEY_PROTECTION_METHOD.equalsIgnoreCase(key)) {
+                protectionMethod = value;
+            } else if (KEY_QIHOO_USERNAME.equalsIgnoreCase(key)) {
+                qihooUsername = value;
+            } else if (KEY_QIHOO_PASSWORD.equalsIgnoreCase(key)) {
+                qihooPassword = value;
             }
         }
     }

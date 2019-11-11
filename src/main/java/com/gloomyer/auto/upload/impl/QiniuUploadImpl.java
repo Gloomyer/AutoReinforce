@@ -18,7 +18,6 @@ import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.io.File;
@@ -71,25 +70,27 @@ public class QiniuUploadImpl implements Upload {
             okhttp3.Response response = call.execute();
             assert response.body() != null;
             JSONObject json = new JSONObject(response.body().string());
-            String remoteMd5 = json.getString("hash");
-            long fileSize = json.getLong("fsize");
-            String localMd5 = Utils.getFileMD5(file);
-            boolean ret = remoteMd5.equals(localMd5) && fileSize == file.length();
-            if (ret) {
-                LG.e("fileName:[{0}]\n" +
-                                "remoteMD5:[{1}]\n" +
-                                "localMD5:[{2}]\n" +
-                                "服务端文件MD5 文件Size 和本地匹配，认定已经存在，不走上传逻辑直接认为成功!\n" +
-                                "完整URL:[{3}]\n" +
-                                "服务器MD5文件查询URL:[{4}]",
-                        file.getName(),
-                        remoteMd5,
-                        localMd5,
-                        fileUrl,
-                        queryUrl
-                );
+            if (json.has("hash") && json.has("fsize")) {
+                String remoteMd5 = json.getString("hash");
+                long fileSize = json.getLong("fsize");
+                String localMd5 = Utils.getFileMD5(file);
+                boolean ret = remoteMd5.equals(localMd5) && fileSize == file.length();
+                if (ret) {
+                    LG.e("fileName:[{0}]\n" +
+                                    "remoteMD5:[{1}]\n" +
+                                    "localMD5:[{2}]\n" +
+                                    "服务端文件MD5 文件Size 和本地匹配，认定已经存在，不走上传逻辑直接认为成功!\n" +
+                                    "完整URL:[{3}]\n" +
+                                    "服务器MD5文件查询URL:[{4}]",
+                            file.getName(),
+                            remoteMd5,
+                            localMd5,
+                            fileUrl,
+                            queryUrl
+                    );
+                }
+                return ret;
             }
-            return ret;
         } catch (Exception e) {
             e.printStackTrace();
         }

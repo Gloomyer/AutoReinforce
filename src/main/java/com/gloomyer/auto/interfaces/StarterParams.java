@@ -21,4 +21,7 @@ public interface StarterParams {
     String KEY_UPLOAD_URL_PREFIX = "-UUP"; //上传 BucketName 加固使用
     String KEY_PROTECTION_SECRETID = "-PSI"; //上传 UrlPrefix 加固使用
     String KEY_PROTECTION_SECRETKEY = "-PSK"; //上传 UrlPrefix 加固使用
+    String KEY_PROTECTION_METHOD = "-PM"; //加固方式 默认乐固(legu) 支持(qihoo)
+    String KEY_QIHOO_USERNAME = "-QHUN"; //360加固账户
+    String KEY_QIHOO_PASSWORD = "-QHPW"; //360加固密码
 }

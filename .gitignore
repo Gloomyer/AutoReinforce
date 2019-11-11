@@ -8,3 +8,7 @@ config.json
 .gradle
 out/
 web/node_modules/
+qihoo/jiagu.db
+qihoo/tempAndroidManifest.xml
+qihoo/output/
+qihoo/.cache/

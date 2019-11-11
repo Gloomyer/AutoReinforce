@@ -1,9 +1,5 @@
 package com.gloomyer.auto.protection;
 
-import com.gloomyer.auto.annotation.DefaultImpl;
-import com.gloomyer.auto.protection.impl.ProtectionImpl;
-
-@DefaultImpl(clazz = ProtectionImpl.class)
 public interface Protection {
     /**
      * 执行加固逻辑
