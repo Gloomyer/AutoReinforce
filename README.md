@@ -141,7 +141,6 @@ java -jar pack2.0.0.jar \
 java -jar pack2.0.0.jar \
 -A 4 \
 -M 0 \
--PAG 替换为你的蒲公英ApiKey \
 -C ructrip \
 -S /Users/gloomy/Downloads/autos \
 -PP /Users/gloomy/Projects/rucheng-android \
