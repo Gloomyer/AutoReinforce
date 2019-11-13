@@ -46,6 +46,18 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 自动构建工具开始支持app-host提交
 
+## 关于360加固登陆失败
+
+如果360自动加固提示登陆失败，提示登陆需要验证码的情况
+
+[360加固](https://jiagu.360.cn/) 去下载对于平台工具 打开并且登陆
+
+然后拷贝360提供的工具目录下的jiagu目录中的
+ 
+>.cache/output/jagu.db 
+
+2个目录一个文件到本工具同级目录下的qihoo下
+
 ## 参数说明:
 
 > -A (*)(action)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固 4:打包+上传app-host
