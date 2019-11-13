@@ -46,7 +46,7 @@ public class MainV2 implements StarterParams {
         if (action != 1) {
             long startTime = System.currentTimeMillis();
             //走打包流程,
-            //createApks();
+            createApks();
             long endTime = System.currentTimeMillis();
             LG.e("打包耗时:{0}秒", (endTime - startTime) / 1000);
         }
@@ -191,10 +191,10 @@ public class MainV2 implements StarterParams {
 
         //如果是只加固，将利用之前生成的包，所以不走删除逻辑
         if (action != 1) {
-//            File saveDir = new File(MainV2.saveDir);
-//            FileUtils.deleteFile(saveDir);
-//            //noinspection ResultOfMethodCallIgnored
-//            saveDir.mkdirs();
+            File saveDir = new File(MainV2.saveDir);
+            FileUtils.deleteFile(saveDir);
+            //noinspection ResultOfMethodCallIgnored
+            saveDir.mkdirs();
         }
 
     }

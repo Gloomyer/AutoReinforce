@@ -38,6 +38,14 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 如果涉及到上传至七牛/阿里云..最后会在保存目录下生成result.txt保存文件的下载地址
 
+## app-host
+
+这两天蒲公英炸了，公司没有申请fir fir认证极其麻烦。
+
+和运维沟通之后，帮忙搭建了一个内网app分发平台 [App-Host](https://github.com/pluosi/app-host) 
+
+自动构建工具开始支持app-host提交
+
 ## 参数说明:
 
 > -A (*)(action)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固 4:打包+上传app-host
@@ -76,6 +84,11 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 > -QHPW (qihoo password) 如果action==3 || action ==1 并且pm==qihoo 这个为必填 qihoo 360 密码
 
+> -AHU (app-host url) app-host post 提交地址 action==4 必填
+
+> -AHT (app-host token) app-host post 提交token action==4 必填
+
+> -AHPI (app-host plat id) app-host post 提交plat id action==4 必填
 ## Use Demos
 
 选择下面你需要的方式 保存到当前目录 任意名称.sh
@@ -121,6 +134,26 @@ java -jar pack2.0.0.jar \
 -SSP 待替换 \
 -SKA 待替换 \
 -SKP 待替换
+```
+
+### 打一个Debug包并且提交到app-host
+```shell script
+java -jar pack2.0.0.jar \
+-A 4 \
+-M 0 \
+-PAG 替换为你的蒲公英ApiKey \
+-C ructrip \
+-S /Users/gloomy/Downloads/autos \
+-PP /Users/gloomy/Projects/rucheng-android \
+-RTV NOT_CONFIGURED_CHANNEL_VALUE \
+-SCMD /Users/gloomy/Library/Android/sdk/build-tools/28.0.3/apksigner \
+-SSF 待替换 \
+-SSP 待替换 \
+-SKA 待替换 \
+-SKP 待替换 \
+-AHU 待替换 \
+-AHT 待替换 \
+-AHPI 待替换
 ```
 
 ### 打一个Release包并且提交到蒲公英平台
