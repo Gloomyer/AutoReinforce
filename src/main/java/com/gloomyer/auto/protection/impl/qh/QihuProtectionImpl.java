@@ -43,6 +43,7 @@ public class QihuProtectionImpl implements Protection {
         CompileTask.get().add();
         for (File file : files) {
             if (file.getName().endsWith(".apk")) {
+                CompileTask.get().add();
                 String normalApkUrl = upload(file);
                 protection(normalApkUrl, file, dir);
             }

@@ -99,7 +99,7 @@ public class QiniuUploadImpl implements Upload {
         return MessageFormat.format("{0}?qhash/md5", fileUrl);
     }
 
-    private String createUploadToken() {
+    public String createUploadToken() {
         Auth auth = Auth.create(UploadCache.uploadAccessKey, UploadCache.uploadSecretKey);
         String token = auth.uploadToken(UploadCache.uploadBucketName);
         LG.i("七牛上传token:{0}", token);
@@ -109,7 +109,7 @@ public class QiniuUploadImpl implements Upload {
     /**
      * 反射创建参数
      */
-    private void createUploadParams() {
+    public void createUploadParams() {
         if (cfg == null) {
             cfg = new Configuration(Region.autoRegion());
             uploadManager = new UploadManager(cfg);
