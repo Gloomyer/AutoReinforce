@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MainV2 implements StarterParams {
 
-    //0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固
+    //0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固 4:打包+上传app-host
     private static int action;
     private static List<String> channels;
     private static String saveDir;
@@ -34,16 +34,19 @@ public class MainV2 implements StarterParams {
     private static String protectionSecretKey;
     private static String qihooUsername;
     private static String qihooPassword;
+    private static String appHostToken;
+    private static String appHostUrl;
+    private static String appHostPlatId;
     private static int protectionMaxTaskSize = 5; //同时加固的任务最大数量
     private static String protectionMethod = "legu";
 
     public static void main(String[] args) {
         createParams(args);
         checkParams();
-        if (action == 2 || action == 0 || action == 3) {
+        if (action != 1) {
             long startTime = System.currentTimeMillis();
             //走打包流程,
-            createApks();
+            //createApks();
             long endTime = System.currentTimeMillis();
             LG.e("打包耗时:{0}秒", (endTime - startTime) / 1000);
         }
@@ -54,6 +57,25 @@ public class MainV2 implements StarterParams {
 
         if (action == 1 || action == 3) {
             protection();
+        }
+
+        if (action == 4) {
+            upload2AppHost();
+        }
+    }
+
+    private static void upload2AppHost() {
+        //蒲公英
+        Upload upload = UploadFactory.create(UploadFactory.UploadMethod.API_HOST);
+        UploadCache.appHostUrl = appHostUrl;
+        UploadCache.appHostToken = appHostToken;
+        UploadCache.appHostPlatId = appHostPlatId;
+        File dir = new File(saveDir);
+        File[] files = dir.listFiles();
+        assert upload != null;
+        assert files != null;
+        for (File file : files) {
+            LG.e("{0}", upload.upload(file));
         }
     }
 
@@ -118,7 +140,7 @@ public class MainV2 implements StarterParams {
             throw new RuntimeException("签名信息必须配置!");
         }
 
-        if (action == 2 && channels.size() > 1) {
+        if ((action == 2 || action == 4) && channels.size() > 1) {
             String channel = channels.get(0);
             LG.e("蒲公英上传模式只支持一个渠道包，只打:{0}渠道", channel);
             channels.clear();
@@ -157,12 +179,22 @@ public class MainV2 implements StarterParams {
             }
         }
 
+        if (action == 4) {
+            if (StringUtils.isEmpty(appHostUrl)
+                    || StringUtils.isEmpty(appHostToken)
+                    || StringUtils.isEmpty(appHostPlatId)) {
+                throw new RuntimeException("action==4" +
+                        "appHostUrl/appHostToken/appHostPlatId" +
+                        "必须配置!");
+            }
+        }
+
         //如果是只加固，将利用之前生成的包，所以不走删除逻辑
         if (action != 1) {
-            File saveDir = new File(MainV2.saveDir);
-            FileUtils.deleteFile(saveDir);
-            //noinspection ResultOfMethodCallIgnored
-            saveDir.mkdirs();
+//            File saveDir = new File(MainV2.saveDir);
+//            FileUtils.deleteFile(saveDir);
+//            //noinspection ResultOfMethodCallIgnored
+//            saveDir.mkdirs();
         }
 
     }
@@ -230,6 +262,12 @@ public class MainV2 implements StarterParams {
                 qihooUsername = value;
             } else if (KEY_QIHOO_PASSWORD.equalsIgnoreCase(key)) {
                 qihooPassword = value;
+            } else if (KEY_APP_HOST_TOKEN.equalsIgnoreCase(key)) {
+                appHostToken = value;
+            } else if (KEY_APP_HOST_URL.equalsIgnoreCase(key)) {
+                appHostUrl = value;
+            } else if (KEY_APP_HOST_PLAT_ID.equalsIgnoreCase(key)) {
+                appHostPlatId = value;
             }
         }
     }

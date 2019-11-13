@@ -1,11 +1,12 @@
 package com.gloomyer.auto.upload;
 
+import com.gloomyer.auto.upload.impl.ApiHostUploadImpl;
 import com.gloomyer.auto.upload.impl.PgyUploadImpl;
 import com.gloomyer.auto.upload.impl.QiniuUploadImpl;
 
 public class UploadFactory {
     public enum UploadMethod {
-        PGY, QINIU
+        PGY, QINIU, API_HOST
     }
 
     private static UploadMethod ofByName(String value) {
@@ -17,6 +18,8 @@ public class UploadFactory {
             return new PgyUploadImpl();
         } else if (method == UploadMethod.QINIU) {
             return new QiniuUploadImpl();
+        } else if (method == UploadMethod.API_HOST) {
+            return new ApiHostUploadImpl();
         }
         return null;
     }

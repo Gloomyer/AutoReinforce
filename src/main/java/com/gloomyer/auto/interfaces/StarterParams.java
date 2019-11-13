@@ -24,4 +24,7 @@ public interface StarterParams {
     String KEY_PROTECTION_SECRETKEY = "-PSK"; //乐固 secretKey
     String KEY_QIHOO_USERNAME = "-QHUN"; //360加固账户
     String KEY_QIHOO_PASSWORD = "-QHPW"; //360加固密码
+    String KEY_APP_HOST_URL = "-AHU"; //appp-host url
+    String KEY_APP_HOST_TOKEN = "-AHT"; //appp-host api key
+    String KEY_APP_HOST_PLAT_ID = "-AHPI"; //appp-host plat id
 }

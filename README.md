@@ -40,7 +40,7 @@ build文件中的NOT_CONFIGURED_CHANNEL_VALUE和manifest中的NOT_CONFIGURED_CHA
 
 ## 参数说明:
 
-> -A (*)(action)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固
+> -A (*)(action)打包方式0:只打包,1:只加固,2:打包+上传至蒲公英, 3:打包加加固 4:打包+上传app-host
 
 > -PAK (pgy api key)蒲公英ApiKey， 如果action != 2 这个不用填， 但是当action==2这个为必填
 
