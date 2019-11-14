@@ -3,6 +3,8 @@ package com.gloomyer.auto.protection.impl.lg;
 import com.gloomyer.auto.domain.ApkInfo;
 import com.gloomyer.auto.protection.impl.CompileTask;
 import com.gloomyer.auto.upload.Upload;
+import com.gloomyer.auto.upload.UploadCache;
+import com.gloomyer.auto.upload.UploadFactory;
 import com.gloomyer.auto.utils.*;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
@@ -38,10 +40,8 @@ class LGProtectionTask implements Runnable {
         try {
             String itemId = upload2LG();
             JSONObject retInfo = query(itemId);
-            File file = downloadApk(retInfo);
             //走签名逻辑
-            sign(file);
-            protectionUrl = upload(file);
+            protectionUrl = upload(sign(downloadApk(retInfo)));
         } catch (Exception e) {
             e.printStackTrace();
             protectionUrl = "加固失败了," + e.getMessage();
@@ -50,7 +50,7 @@ class LGProtectionTask implements Runnable {
     }
 
     private String upload(File file) {
-        Upload impl = Utils.getDefaultImpl(Upload.class);
+        Upload impl = UploadFactory.create(UploadCache.uploadMethod);
         assert impl != null;
         return impl.upload(file);
     }
@@ -59,17 +59,19 @@ class LGProtectionTask implements Runnable {
      * 对apk文件进行签名
      *
      * @param file file
+     * @return file
      */
-    private void sign(File file) {
-        SignUtils.sign(file);
+    private File sign(File file) {
         try {
+            SignUtils.sign(file);
             File signedFile = new File(file.getParent(),
                     file.getName().replace(".legu.unsign.apk", ".legu.signed.apk"));
             FileUtils.copy(file, signedFile);
             file.delete();
+            return signedFile;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("sign:" + e.getMessage());
         }
     }
 
@@ -177,8 +179,9 @@ class LGProtectionTask implements Runnable {
             appInfo.put("AppName", info.getAppName());
 
             serviceInfo.put("ServiceEdition", "basic");
+            serviceInfo.put("SubmitSource", "api");
             serviceInfo.put("CallbackUrl", "");
-            serviceInfo.put("SubmitSource", "MAC_TOOL");
+            serviceInfo.put("PlanId", "0");
 
             params.put("AppInfo", appInfo);
             params.put("ServiceInfo", serviceInfo);

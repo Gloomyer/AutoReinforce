@@ -72,6 +72,7 @@ public class LGProtectionImpl implements Protection {
         LG.e("开始文件上传至云存储!");
 
         //设置上传参数
+        UploadCache.uploadMethod = uploadMethod;
         UploadCache.uploadAccessKey = uploadAccessKey;
         UploadCache.uploadSecretKey = uploadSecretKey;
         UploadCache.uploadBucketName = uploadBucketName;
@@ -80,7 +81,7 @@ public class LGProtectionImpl implements Protection {
         long start = System.currentTimeMillis();
         int count = 0;
         for (File file : files) {
-            if (file.isFile() || file.getName().endsWith(".apk")) {
+            if (file.isFile() && file.getName().endsWith(".apk")) {
                 count++;
                 String fileUrl = upload.upload(file);
                 LGProtectionTasks.add(new LGProtectionTask(

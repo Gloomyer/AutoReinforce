@@ -37,7 +37,7 @@ public class SignUtils {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void sign(File apkFile) {
-        File newFile = new File(apkFile.getParent(), "temp.apk");
+        File newFile = new File(apkFile.getParent(), "temp" + System.currentTimeMillis() + ".apk");
         String cmd = MessageFormat.format(
                 "{0} sign -ks {1} --ks-key-alias {2} --ks-pass pass:{3} --key-pass pass:{4} --out {5} {6}",
                 signCmd,
